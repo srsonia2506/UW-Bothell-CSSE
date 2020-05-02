@@ -31,14 +31,17 @@ class List {
 
 public:
     List();                                     // constructor
-    // ~List();                                 // destructor
+    ~List();                                    // destructor
     // List(const List&);                       // copy constructor
 
     // insert one NodeData object, assume parameter points to valid object,
     // return whether successfully inserted
     bool insert(NodeData*);
-    bool isEmpty() const;                       // is list empty?
+    bool isEmpty() const;
+    bool insert(T*);
+    // is list empty?
     void buildList(ifstream&);                  // build a list from datafile
+    bool operator==(const List&) const;
 
     // needs many more member functions to become a complete ADT
 
@@ -56,6 +59,12 @@ private:
 template <typename T>
 List<T>::List() {
     head = NULL;
+}
+
+//----------------------------------------------------------------------------
+// Destructor
+template<typename T> List<T>::~List() {
+    makeEmpty();
 }
 
 //----------------------------------------------------------------------------
@@ -135,14 +144,47 @@ void List<T>::buildList(ifstream& infile) {
 // operator<<  
 // output operator for class List, print data, 
 // responsibility for output is left to object stored in the list
-template <typename T>
-friend ostream& operator<<(ostream& output, const List<T>& thelist) {
+template<typename T> ostream& operator<<(ostream& output, const List<T>& thelist) {
     typename List<T>::Node* current = thelist.head;
     while (current != NULL) {
         output << *current->data;
         current = current->next;
     }
     return output;
+}
+
+//----------------------------------------------------------------------------
+// Operator== 
+// Compares two lists -> returns true if the lists hold identical objects
+template<typename T> 
+bool List<T>::operator==(const List& comp) const {
+
+    //if both are empty its equal
+    if (head == NULL && comp.head == NULL) {
+        return true;
+    }
+    //if only one is empty thats bad
+    if (head == NULL || comp.head == NULL) {
+        return false;
+    }
+
+    Node* current = head;          //current list head
+    Node* other = comp->head;      //compared list head
+
+    // walk until end of the list or found position missmatch
+    while (current != NULL && other != NULL) {
+        if (current->data != other->data) {
+            return false;
+        }
+        other = other->next;                  // walk to next node
+        current = current->next;              // walk to next node
+    }
+
+    if (current->data != other->data) {       //contingency catch
+        return false;
+    }
+
+    return true;
 }
 
 #endif
