@@ -141,6 +141,65 @@ void List<T>::buildList(ifstream& infile) {
 }
 
 //----------------------------------------------------------------------------
+// Merge
+// takes 2 sorted lists and merge into one long sorted list
+template<typename T> void List<T>::merge(List<T> one, List<T> two) {
+    Node* dummy1 = one.head;
+    Node* dummy2 = two.head;
+    Node* endpoint = nullptr;
+    Node* anchor = nullptr;
+    if (!one.isEmpty() && !two.isEmpty()) {
+        //set to lowest and check for null(set anchor for other one DONE!)
+        if (*dummy1->data > dummy2->data) {
+            anchor = dummy2;        //sets anchor
+            endpoint = anchor;      //brings endpoint to anchor
+            dummy2 = anchor->next;  //moves dummy2 up one
+        }
+        else {
+            anchor = dummy1;        //sets anchor
+            endpoint = anchor;
+            dummy1 = anchor->next;
+        }
+        for (;;) {
+            if (dummy1 == nullptr || dummy2 == nullptr) {
+                break;
+            }
+            else if (dummy1->data > * dummy2->data) {
+                endpoint->next = dummy2;
+                dummy2 = dummy2->next;
+                endpoint = endpoint->next;
+            }
+            else if (*dummy1->data <= *dummy2->data) {
+                endpoint->next = dummy1;
+                dummy1 = dummy1->next;
+                endpoint = endpoint->next;
+            }
+        }
+        //anchor onto bigger one when one nulls
+        if (dummy1 == nullptr) {
+            anchor->next = dummy2;
+        }
+        if (dummy2 == nullptr) {
+            anchor->next = dummy1;
+        }
+    }
+
+    //call after making sure 2 isnt merging 2 and 1 into 2
+    //(when both parameters are not current object)
+    if (this->head != one.head && this->head != two.head) {
+        makeEmpty();
+    }
+
+    head = anchor;
+
+    //null all dangles
+    anchor = nullptr;
+    dummy1 = nullptr;
+    dummy2 = nullptr;
+    endpoint = nullptr;
+}
+
+//----------------------------------------------------------------------------
 // operator<<  
 // output operator for class List, print data, 
 // responsibility for output is left to object stored in the list
