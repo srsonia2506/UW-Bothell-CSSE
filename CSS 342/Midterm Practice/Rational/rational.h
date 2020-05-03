@@ -12,11 +12,17 @@ public:
     Rational operator*(Rational other);
     Rational operator/(Rational other);
 
-    Rational reduce();
+    Rational operator+=(Rational);
+
+    bool operator<(Rational);
+    bool operator>(Rational);
+    bool operator>=(Rational);
+    bool operator<=(Rational);
+    bool operator==(Rational);
+    bool operator!=(Rational);	
 
 private:
     int denom, num;
-
-
+    Rational reduce();
 };
 

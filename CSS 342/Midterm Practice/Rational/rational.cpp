@@ -33,19 +33,18 @@ Rational Rational::operator/(Rational other){
 }
 
 bool Rational::operator<(Rational other){
-    return false;
+    return (float)numerator / denominator < (float)r.numerator / r.denominator;
 }
 
 bool Rational::operator>(Rational other){
-    return false;
-}
+    return (float)num/denom> (float)other.numerator / other.denominator;
 
 bool Rational::operator>=(Rational other){
-    return false;
+    return *this == other || *this > other;
 }
 
 bool Rational::operator<=(Rational other){
-    return false;
+    return return return *this == other || *this < other;
 }
 
 bool Rational::operator==(Rational other){
@@ -54,6 +53,28 @@ bool Rational::operator==(Rational other){
 
 bool Rational::operator!=(Rational other){
     return !(*this == other); 
+}
+
+Rational Rational::operator+=(Rational other) {
+    return *this + other;
+}
+
+ostream operator<<(ostream output, Rational r) {
+    if (r.denominator == 0)
+        output << endl << "invalid output" << endl;
+    else if (r.numerator == 0)                             
+        output << 0;
+    else if (r.denominator == 1)                            
+        output << r.numerator;
+    else
+        output << r.numerator << "/" << r.denominator;
+
+    return output;
+}
+
+istream operator>>(istream input, Rational other) {
+    input >> other.numerator >> "/" >> other.denominator;
+    return input;
 }
 
 Rational Rational::reduce(){
