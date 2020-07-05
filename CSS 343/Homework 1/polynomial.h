@@ -21,7 +21,7 @@ public:
     bool changeCoefficient(const double newCoefficient, const int power);
     // replaces the coefficient of the x^power term
 
-// Arithmetic operators
+    // Arithmetic operators
     Polynomial operator+(const Polynomial& p) const;
     Polynomial operator-(const Polynomial& p) const;
 
